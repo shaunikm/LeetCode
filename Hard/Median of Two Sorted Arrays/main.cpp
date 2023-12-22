@@ -12,36 +12,42 @@ public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
         vector<int> group;
         int g_size = nums1.size() + nums2.size();
+
+        if (nums2.size() <= 0)
+            if (nums1.size() % 2)
+                return nums1[(int)(nums1.size()/2)];
+            else
+                return (nums1[(int)(nums1.size()/2) - 1] + nums1[(int)(nums1.size()/2)])/2.0;
+            
+        else if (nums1.size() <= 0)
+            if (nums2.size() % 2)
+                return nums2[(int)(nums2.size()/2)];
+            else
+                return (nums2[(int)(nums2.size()/2) - 1] + nums2[(int)(nums2.size()/2)])/2.0;
         
         for (int i=0; i < g_size; i++)
         {
-            try
+            if ((nums1[0] < nums2[0] && nums1.size() > 0) || nums2.size() <= 0)
             {
-                if (nums1[0] < nums2[0]) {
-                    group.push_back(nums1[0]);
-                    nums1.erase(nums1.begin());
-                } else {
-                    group.push_back(nums2[0]);
-                    nums2.erase(nums2.begin());
-                }
-            } catch (exception &e)
+                group.push_back(nums1[0]); nums1.erase(nums1.begin());
+            }
+            else
             {
-                group.push_back(nums1[0]);
-                nums1.erase(nums1.begin());
+                group.push_back(nums2[0]); nums2.erase(nums2.begin());
             }
         }
-        cout << g_size << endl;
 
-        for (auto i : group) {
-            cout << i << endl;
-        }
+        if (group.size() % 2)
+            return group[(int)(group.size()/2)];
+        else
+            return (group[(int)(group.size()/2) - 1] + group[(int)(group.size()/2)])/2.0;
     }
 };
 
 int main() {
     Solution sol = Solution();
-    vector<int> nums1 = {1, 3};
-    vector<int> nums2 = {1, 2, 2};
+    vector<int> nums1 = {1, 2};
+    vector<int> nums2 = {3, 4};
 
-    sol.findMedianSortedArrays(nums1, nums2);
+    cout << sol.findMedianSortedArrays(nums1, nums2) << endl;
 }
