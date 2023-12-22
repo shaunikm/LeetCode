@@ -8,7 +8,7 @@ class ListNode:
 class Solution:
     def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
         print(l1.val)
-        print(l1.next.val)
+        print(l1.next.next.val)
 
 if __name__ == "__main__":
     # definition of first Linked List
@@ -23,4 +23,5 @@ if __name__ == "__main__":
     
     # solution
     sol = Solution()
-    print(sol.addTwoNumbers(l1, l2))
+    sol.addTwoNumbers(l1, l2)
+    # print(sol.addTwoNumbers(l1, l2))
