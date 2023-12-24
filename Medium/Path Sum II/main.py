@@ -18,22 +18,32 @@ class TreeNode:
         
     
 class Solution:
+    # preorder search
     def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
+        # if tree is empty
         if not root: return []
-        print(f"Traversed to: {root.val}")
+
+        # if targetsum found and current node is a leaf node
+        if root.val == targetSum and not root.left and not root.right: return [[root.val]]
+
+        # paths
         sums = []
+
+        # check if left node exists
         if root.left:
-            if root.left.val == targetSum: sums.append([root.val] + [root.left.val])
-            if root.left.val < targetSum:
-                res = self.pathSum(root.left, targetSum-root.val)
-                if res:
-                    for path in res:
-                        sums.append([root.val] + path)
+            # traverse left subtree
+            res = self.pathSum(root.left, targetSum-root.val)
+            if res:
+                for path in res:
+                    # add all valid paths to list
+                    sums.append([root.val] + path)
+
+        # check if node exists
         if root.right:
-            if root.right.val == targetSum: sums.append([root.val] + [root.right.val])
-            if root.right.val < targetSum:
-                res = self.pathSum(root.right, targetSum-root.val)
-                if res:
-                    for path in res:
-                        sums.append([root.val] + path)
-            
+            # traverse right subtree
+            res = self.pathSum(root.right, targetSum-root.val)
+            if res:
+                for path in res:
+                    # add all valid paths to list
+                    sums.append([root.val] + path)
+        return sums
