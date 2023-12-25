@@ -20,6 +20,7 @@ struct ListNode {
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        if (l1 == nullptr && l2 == nullptr) return nullptr;
         int carryover = 0;
         ListNode* l1_traverser = l1;
         ListNode* l2_traverser = l2;
