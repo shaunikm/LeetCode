@@ -20,32 +20,59 @@ struct ListNode {
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        bool longer = false;
-        int remainder = 0;
-        ListNode* next1;
-        ListNode* next2;
-        next1 = l1->next;
-        next2  = l2->next;
+        int carryover = 0;
+        ListNode* l1_traverser = l1;
+        ListNode* l2_traverser = l2;
+
+        /* create head node for linked list */
+        ListNode* results = new ListNode();
+        /* point to head node */
+        ListNode* path = results;
 
         while (true)
         {
-            /* exit if linked list too large */
-            if (next1 == nullptr) {
-                break;
-            } else if (next2 == nullptr) {
-                cout << "bigger" << endl;
-                longer = true;
-                break;
+            /* set values if node doesn't exist */
+            if (l1_traverser != nullptr) 
+            {
+                path->val += l1_traverser->val;
+                /* point to next node */
+                l1_traverser = l1_traverser->next;
+            }
+            
+            if (l2_traverser != nullptr)
+            {
+                path->val += l2_traverser->val;
+                /* point to next node */
+                l2_traverser  = l2_traverser->next;
             }
 
-            /* point to next */
-            next1 = next1->next;
-            next2  = next2->next;
-            
+            /* add values of both nodes and only add the units place */
+            path->val += carryover;
+
+            /* carry the tens digit to the next node */
+            if (path->val >= 10) {
+                path->val -= 10;
+                carryover = 1;
+            } else {
+                carryover = 0;
+            }
+
+            if (l1_traverser != nullptr || l2_traverser != nullptr)
+            {
+                /* traverse to next node */
+                path->next = new ListNode();
+                path = path->next;
+            } else break;
         }
 
-        if (longer) return l2;
-        else return l1;
+        /* create new node if carry over still there */
+        if (carryover >= 1)
+        {
+            path->next = new ListNode();
+            path->next->val = carryover;
+        }
+        
+        return results;    
     }
 };
 
@@ -56,19 +83,15 @@ int main() {
     ListNode l11 = ListNode();
     ListNode l1 = ListNode();
 
-    ListNode* p13 = &l13;
-    p13->val = 5;
-
     ListNode* p12 = &l12;
-    p12->val = 3;
-    p12->next = p13;
+    p12->val = 2;
 
     ListNode* p11 = &l11;
-    p11->val = 4;
+    p11->val = 3;
     p11->next = p12;
 
     ListNode* p1 = &l1;
-    p1->val = 2;
+    p1->val = 8;
     p1->next = p11;
 
     /* second linked list */
@@ -77,24 +100,26 @@ int main() {
     ListNode l2 = ListNode();
 
     ListNode* p22 = &l22;
-    p22->val = 4;
+    p22->val = 1;
 
     ListNode* p21 = &l21;
-    p21->val = 6;
-    p21->next = p12;
+    p21->val = 2;
+    p21->next = p22;
 
     ListNode* p2 = &l2;
-    p2->val = 5;
+    p2->val = 9;
     p2->next = p21;
 
     Solution sol = Solution();
 
     ListNode* prod = sol.addTwoNumbers(p1, p2);
     ListNode* next_prod = prod->next;
-    cout << prod->val << ' ';
+    cout << prod->val << " -> ";
     while (next_prod != nullptr) {
-        cout << next_prod->val << ' ';
+        cout << next_prod->val << " -> ";
         next_prod = next_prod->next;
     }
-    cout << endl;
+    cout << "nullptr" << endl;
+    delete prod;
+    delete next_prod;
 }
