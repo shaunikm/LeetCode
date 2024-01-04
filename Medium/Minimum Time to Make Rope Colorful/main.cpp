@@ -15,15 +15,33 @@ class Solution {
 public:
     int minCost(string colors, vector<int>& neededTime) {
         int cost = 0;
-        // char temp = NULL;
+        int temp = 0;
+        int skip[colors.size()];
 
         for (int i = 1; i < colors.length(); i++)
         {
             if (colors[i] == colors[i-1]) {
-                if (neededTime[i] > neededTime[i-1]) {
+                if (skip[i-1] == 1) {
+                    temp = i-1;
+                    while (true) {
+                        if (skip[temp] == 1) {
+                            temp--;
+                        } else break;
+                    }
+                    if (neededTime[i] > neededTime[temp]) {
+                        cost += neededTime[temp];
+                        skip[temp] = 1;
+                    } else {
+                        cost += neededTime[i];
+                        skip[i] = 1;
+                    }
+                }
+                else if (neededTime[i] > neededTime[i-1]) {
                     cost += neededTime[i-1];
+                    skip[i-1] = 1;
                 } else {
                     cost += neededTime[i];
+                    skip[i] = 1;
                 }
             }
         }
@@ -32,10 +50,38 @@ public:
     }
 };
 
+/*
+class Solution {
+public:
+    int minCost(string colors, vector<int>& neededTime) {
+        int cost = 0;
+
+        for (int i = 1; i < colors.length(); i++)
+        {
+            if (colors[i] == colors[i-1]) {
+                if (neededTime[i] > neededTime[i-1]) {
+                    cost += neededTime[i-1];
+                    colors.erase(i-1, 1);
+                    neededTime.erase(neededTime.begin()+i-1, neededTime.begin()+i);
+                    i--;
+                } else {
+                    cost += neededTime[i];
+                    colors.erase(i, 1);
+                    neededTime.erase(neededTime.begin()+i, neededTime.begin()+i+1);
+                    i--;
+                }
+            }
+        }
+
+        return cost;
+    }
+};
+*/
+
 int main() {
     Solution sol = Solution();
-    string colors = "aaaaa";
-    vector<int> neededTime = {1,2,3,4,1};
+    string colors = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab";
+    vector<int> neededTime = {2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,2,1,2,4,1,};
 
     cout << sol.minCost(colors, neededTime) << endl;
 }
